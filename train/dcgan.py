@@ -8,14 +8,16 @@ import matplotlib.pyplot as plt
 import wandb
 
 class DCGAN(object):
-    def __init__(self, batch_size, noise_dim = 100, num_examples_to_generate = 9):
+
+    def __init__(self, batch_size, n_noise = 100, num_examples_to_generate = 9):
+        super().__init__()
         self.batch_size = batch_size
-        self.noise = tf.random.normal([batch_size, noise_dim])
+        self.noise = tf.random.normal([batch_size, n_noise])
         # This method returns a helper function to compute cross entropy loss
         self.cross_entropy = keras.losses.BinaryCrossentropy(from_logits=True)
-        self.seed = tf.random.normal([num_examples_to_generate, noise_dim])
+        self.seed = tf.random.normal([num_examples_to_generate, n_noise])
 
-    def generator():
+    def generator(self):
         print("Generating DCGAN model.")
         model = tf.keras.Sequential()
         model.add(layers.Dense(45*30*256, use_bias=False, input_shape=(100,)))
@@ -49,7 +51,8 @@ class DCGAN(object):
     def generator_loss(self,fake_output):
         return self.cross_entropy(tf.ones_like(fake_output), fake_output)
 
-    def discriminator():
+    
+    def discriminator(self):
         print("DCGAN descriminator model")
         model = tf.keras.Sequential()
         model.add(layers.Conv2D(32, (5, 5), strides=(2, 2), padding='same',
@@ -88,22 +91,24 @@ class DCGAN(object):
         
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
             print("Generator for noise")
-            generated_images = self.generator(self.noise, training=True)
+            generator = tf.function(self.generator())
+            discriminator = tf.function(self.discriminator())
+            generated_images = generator(self.noise)
             print("Discriminator for images")
-            real_output = self.discriminator(images, training=True)
+            real_out = discriminator(images)
             print("Discriminator for noise")
-            fake_output = self.discriminator(generated_images, training=True)
+            fake_out = discriminator(generated_images)
 
-            gen_loss = self.generator_loss(fake_output)
+            gen_loss = self.generator_loss(fake_out)
             print("gen_loss :",gen_loss)
-            disc_loss = self.discriminator_loss(real_output, fake_output)
+            disc_loss = self.discriminator_loss(self,real_output=real_out, fake_output=fake_out)
             print("disc_loss :",disc_loss)
 
-            gradients_of_generator = gen_tape.gradient(gen_loss, self.generator.trainable_variables)
-            gradients_of_discriminator = disc_tape.gradient(disc_loss, self.discriminator.trainable_variables)
+            gradients_of_generator = gen_tape.gradient(gen_loss, generator.trainable_variables)
+            gradients_of_discriminator = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
 
-            self.generator_optimizer.apply_gradients(zip(gradients_of_generator, self.generator.trainable_variables))
-            self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, self.discriminator.trainable_variables))
+            self.generator_optimizer.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
+            self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, discriminator.trainable_variables))
     
 
     def train(self, dataset, epochs):
@@ -117,7 +122,7 @@ class DCGAN(object):
 
             # Produce images for the GIF as you go
             display.clear_output(wait=True)
-            self.generate_and_save_images(self.generator, epoch + 1, self.seed)
+            self.generate_and_save_images(self.generator(), epoch + 1, self.seed)
 
             # Save the model every 15 epochs
             if (epoch + 1) % 15 == 0:
@@ -130,12 +135,12 @@ class DCGAN(object):
         
             # Generate after the final epoch
             display.clear_output(wait=True)
-            self.generate_and_save_images(self.generator, epochs, self.seed)
+            self.generate_and_save_images(self.generator(), epochs, self.seed)
 
     def generate_and_save_images(model, epoch, test_input):
         # Notice `training` is set to False.
         # This is so all layers run in inference mode (batchnorm).
-        predictions = model(test_input, training=False)
+        predictions = model(test_input)
 
         fig = plt.figure(figsize=(10, 10))
         print(predictions)
@@ -156,5 +161,5 @@ class DCGAN(object):
         self.checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
         self.checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
                                         discriminator_optimizer=discriminator_optimizer,
-                                        generator=self.generator,
-                                        discriminator=self.discriminator)
+                                        generator=self.generator(),
+                                        discriminator=self.discriminator())
