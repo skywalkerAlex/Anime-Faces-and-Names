@@ -1,0 +1,14 @@
+# files
+*.log
+
+# dataset and results
+dataset/
+training_checkpoints/
+wandb/
+cache/
+
+# ide
+.vscode/
+
+# python
+__pycache__/
