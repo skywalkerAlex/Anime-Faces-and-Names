@@ -1,0 +1,144 @@
+Note! You will need tensorflow-gpu version 2.8.0 or higher. Your version is 2.8.0
+[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+Found 58085 files belonging to 1 classes.
+Using 40660 files for training.
+Found 58085 files belonging to 1 classes.
+Using 17425 files for validation.
+(5, 360, 240, 3)
+WARNING:tensorflow:AutoGraph could not transform <function <lambda> at 0x00000211A51374C0> and will run it as-is.
+Cause: could not parse the source code of <function <lambda> at 0x00000211A51374C0>: no matching AST found among candidates:
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+WARNING: AutoGraph could not transform <function <lambda> at 0x00000211A51374C0> and will run it as-is.
+Cause: could not parse the source code of <function <lambda> at 0x00000211A51374C0>: no matching AST found among candidates:
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+<MapDataset element_spec=TensorSpec(shape=(None, 360, 240, 3), dtype=tf.float32, name=None)>
+(5, 360, 240, 3)
+In range between:  0.0  and:  1.0
+Wall time: 17.7 s
+Generating DCGAN model.
+Adding Dense...
+Adding Batch Normalization...
+Adding Leaky ReLU...
+Reshape...
+(None, 45, 30, 256)
+Adding Convolution...
+(None, 45, 30, 128)
+Adding 2nd Batch Normalization...
+Adding 2nd Leaky ReLU...
+Adding 2nd Convolution...
+(None, 90, 60, 64)
+Adding 3rd Batch Normalization...
+Adding 3rd Leaky ReLU...
+Adding 3rd Convolution...
+(None, 180, 120, 32)
+Adding 4th Batch Normalization...
+Adding 4th Leaky ReLU...
+Adding 4th Convolution...
+(None, 360, 240, 3)
+DCGAN model completed
+(1, 360, 240, 3)
+Model: "sequential_2"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #
+=================================================================
+ dense_2 (Dense)             (None, 345600)            34560000
+ batch_normalization_4 (Batc  (None, 345600)           1382400
+ hNormalization)
+ leaky_re_lu_8 (LeakyReLU)   (None, 345600)            0
+ reshape_1 (Reshape)         (None, 45, 30, 256)       0
+ conv2d_transpose_4 (Conv2DT  (None, 45, 30, 128)      819200
+ ranspose)
+ batch_normalization_5 (Batc  (None, 45, 30, 128)      512
+ hNormalization)
+ leaky_re_lu_9 (LeakyReLU)   (None, 45, 30, 128)       0
+ conv2d_transpose_5 (Conv2DT  (None, 90, 60, 64)       204800
+ ranspose)
+ batch_normalization_6 (Batc  (None, 90, 60, 64)       256
+ hNormalization)
+ leaky_re_lu_10 (LeakyReLU)  (None, 90, 60, 64)        0
+ conv2d_transpose_6 (Conv2DT  (None, 180, 120, 32)     51200
+ ranspose)
+ batch_normalization_7 (Batc  (None, 180, 120, 32)     128
+ hNormalization)
+ leaky_re_lu_11 (LeakyReLU)  (None, 180, 120, 32)      0
+ conv2d_transpose_7 (Conv2DT  (None, 360, 240, 3)      2400
+ ranspose)
+=================================================================
+Total params: 37,020,896
+Trainable params: 36,329,248
+Non-trainable params: 691,648
+_________________________________________________________________
+Wall time: 205 ms
+DCGAN descriminator model
+Adding Convolutional...
+Adding Leaky Relu...
+Adding 2nd Convolutional...
+Adding 2nd Leaky Relu...
+Adding 3rd Convolutional...
+Adding 3rd Leaky Relu...
+Adding 4th Convolutional...
+Adding 4th Leaky Relu...
+Adding Flatten...
+Adding Dense...
+(None, 1)
+DCGAN descriminator Completed!!
+tf.Tensor([[-0.00021187]], shape=(1, 1), dtype=float32)
+Model: "sequential_3"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #
+=================================================================
+ conv2d_4 (Conv2D)           (None, 180, 120, 32)      2432
+ leaky_re_lu_12 (LeakyReLU)  (None, 180, 120, 32)      0
+ dropout_4 (Dropout)         (None, 180, 120, 32)      0
+ conv2d_5 (Conv2D)           (None, 90, 60, 64)        51264
+ leaky_re_lu_13 (LeakyReLU)  (None, 90, 60, 64)        0
+ dropout_5 (Dropout)         (None, 90, 60, 64)        0
+ conv2d_6 (Conv2D)           (None, 45, 30, 128)       204928
+ leaky_re_lu_14 (LeakyReLU)  (None, 45, 30, 128)       0
+ dropout_6 (Dropout)         (None, 45, 30, 128)       0
+ conv2d_7 (Conv2D)           (None, 23, 15, 356)       1139556
+ leaky_re_lu_15 (LeakyReLU)  (None, 23, 15, 356)       0
+ dropout_7 (Dropout)         (None, 23, 15, 356)       0
+ flatten_1 (Flatten)         (None, 122820)            0
+ dense_3 (Dense)             (None, 1)                 122821
+=================================================================
+Total params: 1,521,001
+Trainable params: 1,521,001
+Non-trainable params: 0
+_________________________________________________________________
+WARNING:tensorflow:Collective ops is not configured at program startup. Some performance features may not be enabled.
+INFO:tensorflow:Single-worker MultiWorkerMirroredStrategy with local_devices = ('/device:GPU:0',), communication = CommunicationImplementation.AUTO
+Training Start...
+Epoch : 0
+Training step
+Generator for noise
+Discriminator for images
+Discriminator for noise
+gen_loss : Tensor("binary_crossentropy/weighted_loss/value:0", shape=(), dtype=float32)
+disc_loss : Tensor("add:0", shape=(), dtype=float32)
+Training step
+Generator for noise
+Discriminator for images
+Discriminator for noise
+gen_loss : Tensor("binary_crossentropy/weighted_loss/value:0", shape=(), dtype=float32)
+disc_loss : Tensor("add:0", shape=(), dtype=float32)
+Time for epoch 1 is 1285.995483636856 sec
+Epoch : 1
+Time for epoch 2 is 1255.450846672058 sec
+Epoch : 2
+Time for epoch 3 is 1254.6111903190613 sec
+Epoch : 3
+Time for epoch 4 is 1252.6155934333801 sec
+Epoch : 4
+Time for epoch 5 is 1252.6116635799408 sec
+Epoch : 5
+Time for epoch 6 is 20835.685728788376 sec
+Epoch : 6
+Time for epoch 7 is 1253.266385793686 sec
+Epoch : 7
+Time for epoch 8 is 1256.4833788871765 sec
+Epoch : 8
+Time for epoch 9 is 1250.8284878730774 sec
+Epoch : 9
+Time for epoch 10 is 1249.2379796504974 sec
+Epoch : 10
