@@ -1,6 +1,0 @@
-Note! You will need tensorflow-gpu version 2.8.0 or higher. Your version is 2.8.0
-[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
-WARNING:tensorflow:From C:\Users\alexd\AppData\Local\Temp/ipykernel_9552/3996887578.py:20: _CollectiveAllReduceStrategyExperimental.__init__ (from tensorflow.python.distribute.collective_all_reduce_strategy) is deprecated and will be removed in a future version.
-Instructions for updating:
-use distribute.MultiWorkerMirroredStrategy instead
-INFO:tensorflow:Single-worker MultiWorkerMirroredStrategy with local_devices = ('/device:GPU:0',), communication = CommunicationImplementation.AUTO
