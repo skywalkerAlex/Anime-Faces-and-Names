@@ -3,12 +3,13 @@
 
 # dataset and results
 dataset/
-training_checkpoints/
-wandb/
 cache/
-
-# ide
+generated_images/
+BackUp/
 .vscode/
+.ipynb_checkpoints/
+anime/
+anime_tut/
 
 # python
 __pycache__/
