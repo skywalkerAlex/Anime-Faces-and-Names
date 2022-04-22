@@ -3,6 +3,7 @@
 
 # dataset and results
 dataset/
+dataset_faces/
 cache/
 generated_images/
 BackUp/
@@ -10,6 +11,7 @@ BackUp/
 .ipynb_checkpoints/
 anime/
 anime_tut/
+anime_faces/
 
 # python
 __pycache__/
