@@ -1,16 +1,15 @@
-# files
+## environment
 *.log
+.vscode/
+.ipynb_checkpoints/
 
-# dataset and results
+## dataset and folders
 dataset/
 dataset_faces/
 cache/
 generated_images/
 BackUp/
-.vscode/
-.ipynb_checkpoints/
 anime/
-anime_tut/
 anime_faces/
 
 # python
